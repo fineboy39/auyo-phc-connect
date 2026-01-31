@@ -41,115 +41,170 @@ const LANGUAGES = {
 const styles = {
   container: {
     minHeight: "100vh",
-    maxHeight: "100vh",
     background: "linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "10px",
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    padding: "0",
+    margin: "0",
     overflow: "hidden"
   },
   wrapper: {
     display: "flex",
     flexDirection: "column",
-    gap: "15px",
+    height: "100vh",
     width: "100%",
-    maxWidth: "1200px",
-    height: "95vh",
+    maxWidth: "100%",
+    margin: "0 auto",
     overflow: "hidden"
+  },
+  // Mobile responsive styles
+  mobileView: {
+    display: "block",
+    '@media (min-width: 768px)': {
+      display: "none"
+    }
+  },
+  desktopView: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex"
+    }
   },
   topBar: {
     backgroundColor: "white",
-    borderRadius: "16px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)",
-    padding: "15px 25px",
+    padding: "12px 16px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    gap: "15px"
+    gap: "10px",
+    borderBottom: "1px solid #e2e8f0",
+    flexShrink: 0
   },
   logoContainer: {
     display: "flex",
     alignItems: "center",
-    gap: "12px"
+    gap: "10px",
+    flex: 1,
+    minWidth: 0
   },
   logoIcon: {
     backgroundColor: "rgba(37, 99, 235, 0.1)",
-    padding: "10px",
-    borderRadius: "12px",
-    fontSize: "20px",
-    color: "#2563eb"
+    padding: "8px",
+    borderRadius: "10px",
+    fontSize: "18px",
+    color: "#2563eb",
+    flexShrink: 0
+  },
+  titleContainer: {
+    minWidth: 0,
+    overflow: "hidden"
   },
   title: {
-    fontSize: "20px",
+    fontSize: "18px",
     fontWeight: "700",
     margin: "0 0 2px 0",
-    color: "#1e293b"
+    color: "#1e293b",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   subtitle: {
-    fontSize: "12px",
+    fontSize: "11px",
     color: "#64748b",
-    margin: "0"
+    margin: "0",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
   },
   controls: {
     display: "flex",
     alignItems: "center",
-    gap: "15px",
-    flexWrap: "wrap"
+    gap: "8px",
+    flexShrink: 0
   },
   languageButtons: {
     display: "flex",
-    gap: "8px",
+    gap: "4px",
     backgroundColor: "#f1f5f9",
-    padding: "4px",
-    borderRadius: "8px"
+    padding: "2px",
+    borderRadius: "6px",
+    flexShrink: 0
   },
-  mainContent: {
+  // Mobile tabs for switching between chat and PHC list
+  mobileTabs: {
     display: "flex",
-    gap: "15px",
+    backgroundColor: "white",
+    borderBottom: "1px solid #e2e8f0",
+    padding: "0 16px"
+  },
+  mobileTab: {
     flex: 1,
-    overflow: "hidden",
-    minHeight: 0
+    padding: "12px",
+    textAlign: "center",
+    fontSize: "14px",
+    fontWeight: "500",
+    color: "#64748b",
+    borderBottom: "2px solid transparent",
+    background: "none",
+    border: "none",
+    cursor: "pointer"
   },
-  leftPanel: {
-    flex: "2",
-    backgroundColor: "white",
-    borderRadius: "16px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)",
+  activeTab: {
+    color: "#2563eb",
+    borderBottomColor: "#2563eb"
+  },
+  // Main content area
+  mainContent: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    minWidth: 0
+    position: "relative"
   },
-  rightPanel: {
-    flex: "1",
-    backgroundColor: "white",
-    borderRadius: "16px",
-    boxShadow: "0 8px 30px rgba(0, 0, 0, 0.08)",
+  chatPanel: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    minWidth: "300px"
+    backgroundColor: "white"
   },
+  phcPanel: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    backgroundColor: "white",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    transform: "translateX(100%)",
+    transition: "transform 0.3s ease"
+  },
+  phcPanelActive: {
+    transform: "translateX(0)"
+  },
+  // Messages area
   messagesArea: {
     flex: 1,
     overflowY: "auto",
-    padding: "20px",
-    background: "linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%)"
+    padding: "16px",
+    background: "#f8fafc",
+    WebkitOverflowScrolling: "touch" // Smooth scrolling on iOS
   },
   messageText: {
     fontSize: "14px",
     lineHeight: "1.5",
     whiteSpace: "pre-line",
-    margin: 0
+    margin: 0,
+    wordBreak: "break-word"
   },
   messageBubble: {
-    marginBottom: "12px",
-    padding: "12px 16px",
+    marginBottom: "10px",
+    padding: "10px 14px",
     borderRadius: "16px",
-    maxWidth: "85%",
+    maxWidth: "90%",
     wordWrap: "break-word"
   },
   userMessage: {
@@ -159,71 +214,80 @@ const styles = {
     borderBottomRightRadius: "4px"
   },
   assistantMessage: {
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "white",
     color: "#1e293b",
     marginRight: "auto",
-    borderBottomLeftRadius: "4px"
+    border: "1px solid #e2e8f0",
+    borderBottomLeftRadius: "4px",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
   },
+  // Input area
   inputArea: {
-    padding: "15px 20px",
+    padding: "12px 16px",
     borderTop: "1px solid #e2e8f0",
-    backgroundColor: "white"
+    backgroundColor: "white",
+    flexShrink: 0
   },
   inputRow: {
     display: "flex",
-    gap: "10px",
+    gap: "8px",
     marginBottom: "8px"
   },
   input: {
     flex: 1,
-    padding: "12px 16px",
+    padding: "10px 14px",
     backgroundColor: "#f8fafc",
     border: "1px solid #e2e8f0",
     borderRadius: "12px",
     fontSize: "14px",
     color: "#1e293b",
-    outline: "none"
+    outline: "none",
+    minWidth: 0
   },
   sendButton: {
-    padding: "12px 24px",
+    padding: "10px 16px",
     backgroundColor: "#3b82f6",
     color: "white",
     border: "none",
     borderRadius: "12px",
     fontWeight: "500",
     cursor: "pointer",
-    minWidth: "80px"
+    flexShrink: 0,
+    minWidth: "60px"
   },
+  // Disease buttons for mobile
   quickActions: {
     display: "flex",
-    gap: "8px",
+    gap: "6px",
     flexWrap: "wrap",
-    marginTop: "10px"
+    marginTop: "8px"
   },
   diseaseButton: {
-    padding: "8px 12px",
+    padding: "6px 10px",
     borderRadius: "8px",
-    fontSize: "12px",
+    fontSize: "11px",
     fontWeight: "500",
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "4px",
     cursor: "pointer",
     border: "none",
     color: "white",
     flexShrink: 0
   },
-  sideHeader: {
-    padding: "20px",
+  // PHC List styles
+  phcHeader: {
+    padding: "16px",
     background: "linear-gradient(135deg, #2563eb 0%, #0d9488 100%)",
-    color: "white"
+    color: "white",
+    flexShrink: 0
   },
-  sideTitle: {
-    fontSize: "18px",
+  phcTitle: {
+    fontSize: "16px",
     fontWeight: "600",
     margin: "0 0 4px 0"
   },
-  sideSubtitle: {
+  phcSubtitle: {
     fontSize: "11px",
     opacity: 0.9,
     margin: 0
@@ -231,7 +295,8 @@ const styles = {
   phcListContainer: {
     flex: 1,
     overflowY: "auto",
-    padding: "15px"
+    padding: "16px",
+    WebkitOverflowScrolling: "touch"
   },
   phcItem: {
     padding: "12px",
@@ -252,11 +317,25 @@ const styles = {
     margin: 0
   },
   emergencyBox: {
-    padding: "15px",
+    padding: "12px",
     backgroundColor: "#fef2f2",
     borderRadius: "10px",
-    marginTop: "15px",
+    marginTop: "12px",
     border: "1px solid #fecaca"
+  },
+  emergencyTitle: {
+    fontSize: "13px",
+    fontWeight: "600",
+    color: "#dc2626",
+    margin: "0 0 6px 0",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px"
+  },
+  emergencyText: {
+    fontSize: "11px",
+    color: "#991b1b",
+    margin: "0 0 8px 0"
   },
   emergencyButton: {
     width: "100%",
@@ -267,16 +346,23 @@ const styles = {
     borderRadius: "8px",
     fontWeight: "500",
     cursor: "pointer",
-    marginTop: "8px"
+    marginTop: "8px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px"
   },
+  // Loading dots
   loadingDots: {
     display: "flex",
     gap: "6px",
     padding: "12px 16px",
-    backgroundColor: "#f1f5f9",
+    backgroundColor: "white",
     borderRadius: "16px",
     marginBottom: "12px",
-    maxWidth: "120px"
+    maxWidth: "120px",
+    border: "1px solid #e2e8f0",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
   },
   dot: {
     width: "6px",
@@ -284,15 +370,87 @@ const styles = {
     backgroundColor: "#3b82f6",
     borderRadius: "50%"
   },
+  // Footer
   footer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "10px 20px",
+    padding: "8px 16px",
     backgroundColor: "#f8fafc",
     borderTop: "1px solid #e2e8f0",
-    fontSize: "12px",
-    color: "#64748b"
+    fontSize: "11px",
+    color: "#64748b",
+    flexShrink: 0
+  },
+  // Desktop styles (hidden on mobile)
+  desktopMainContent: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex",
+      flex: 1,
+      gap: "16px",
+      padding: "16px",
+      overflow: "hidden"
+    }
+  },
+  desktopLeftPanel: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex",
+      flex: 2,
+      flexDirection: "column",
+      backgroundColor: "white",
+      borderRadius: "16px",
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+      overflow: "hidden"
+    }
+  },
+  desktopRightPanel: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex",
+      flex: 1,
+      flexDirection: "column",
+      backgroundColor: "white",
+      borderRadius: "16px",
+      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+      overflow: "hidden",
+      minWidth: "280px",
+      maxWidth: "350px"
+    }
+  },
+  desktopMessagesArea: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex",
+      flex: 1,
+      overflowY: "auto",
+      padding: "20px",
+      background: "#f8fafc"
+    }
+  },
+  desktopPhcListContainer: {
+    display: "none",
+    '@media (min-width: 768px)': {
+      display: "flex",
+      flex: 1,
+      overflowY: "auto",
+      padding: "16px"
+    }
+  }
+};
+
+// Add CSS animation for loading dots
+const addAnimationStyles = () => {
+  if (typeof document !== 'undefined') {
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+      @keyframes bounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
   }
 };
 
@@ -307,7 +465,13 @@ export default function AuyoPHCConnectDemo() {
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("en");
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("chat"); // "chat" or "phc" for mobile
   const messagesEndRef = useRef(null);
+
+  // Initialize animation styles on mount
+  useEffect(() => {
+    addAnimationStyles();
+  }, []);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -486,11 +650,11 @@ export default function AuyoPHCConnectDemo() {
   return (
     <div style={styles.container}>
       <div style={styles.wrapper}>
-        {/* Top Bar */}
+        {/* Top Bar - Mobile & Desktop */}
         <div style={styles.topBar}>
           <div style={styles.logoContainer}>
             <div style={styles.logoIcon}>🏥</div>
-            <div>
+            <div style={styles.titleContainer}>
               <h1 style={styles.title}>Auyo PHC Connect</h1>
               <p style={styles.subtitle}>
                 {language === "ha" 
@@ -507,21 +671,21 @@ export default function AuyoPHCConnectDemo() {
                   key={code}
                   onClick={() => setLanguage(code)}
                   style={{
-                    padding: "6px 12px",
-                    borderRadius: "6px",
+                    padding: "4px 8px",
+                    borderRadius: "4px",
                     border: "none",
                     background: language === code ? "#2563eb" : "transparent",
                     color: language === code ? "white" : "#64748b",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     fontWeight: "500",
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
-                    gap: "4px"
+                    gap: "2px"
                   }}
                 >
-                  <span>{lang.flag}</span>
-                  <span>{lang.label}</span>
+                  <span style={{ fontSize: "12px" }}>{lang.flag}</span>
+                  <span>{code === "en" ? "EN" : "HA"}</span>
                 </button>
               ))}
             </div>
@@ -529,49 +693,296 @@ export default function AuyoPHCConnectDemo() {
             <button
               onClick={clearChat}
               style={{
-                padding: "6px 12px",
-                borderRadius: "6px",
+                padding: "4px 8px",
+                borderRadius: "4px",
                 border: "1px solid #e2e8f0",
                 background: "white",
                 color: "#64748b",
-                fontSize: "12px",
+                fontSize: "11px",
                 fontWeight: "500",
                 cursor: "pointer"
               }}
             >
-              🗑️ {language === "ha" ? "Share" : "Clear"}
+              🗑️
             </button>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div style={styles.mainContent}>
+        {/* Mobile View */}
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, overflow: "hidden" }}>
+          {/* Mobile Tabs */}
+          <div style={styles.mobileTabs}>
+            <button
+              onClick={() => setActiveTab("chat")}
+              style={{
+                ...styles.mobileTab,
+                ...(activeTab === "chat" ? styles.activeTab : {})
+              }}
+            >
+              💬 {language === "ha" ? "Tattaunawa" : "Chat"}
+            </button>
+            <button
+              onClick={() => setActiveTab("phc")}
+              style={{
+                ...styles.mobileTab,
+                ...(activeTab === "phc" ? styles.activeTab : {})
+              }}
+            >
+              📍 {language === "ha" ? "Cibiyoyi" : "PHCs"}
+            </button>
+          </div>
+
+          {/* Main Content Area */}
+          <div style={styles.mainContent}>
+            {/* Chat Panel */}
+            <div 
+              style={{
+                ...styles.chatPanel,
+                display: activeTab === "chat" ? "flex" : "none"
+              }}
+            >
+              {/* Messages Area */}
+              <div style={styles.messagesArea}>
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      ...styles.messageBubble,
+                      ...(msg.role === "user" ? styles.userMessage : styles.assistantMessage)
+                    }}
+                  >
+                    <div style={{
+                      fontSize: "11px",
+                      fontWeight: "600",
+                      marginBottom: "4px",
+                      opacity: 0.8,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center"
+                    }}>
+                      <span>
+                        {msg.role === "user" 
+                          ? (language === "ha" ? "Kai" : "You") 
+                          : (language === "ha" ? "Mataimakin" : "Assistant")}
+                      </span>
+                      <span style={{ fontSize: "10px", opacity: 0.7 }}>
+                        {msg.timestamp}
+                      </span>
+                    </div>
+                    <div style={styles.messageText}>{msg.text}</div>
+                  </div>
+                ))}
+                
+                {isLoading && (
+                  <div style={styles.loadingDots}>
+                    <div style={{...styles.dot, animation: "bounce 1.4s infinite 0ms"}}></div>
+                    <div style={{...styles.dot, animation: "bounce 1.4s infinite 200ms"}}></div>
+                    <div style={{...styles.dot, animation: "bounce 1.4s infinite 400ms"}}></div>
+                    <span style={{ fontSize: "12px", color: "#64748b", marginLeft: "8px" }}>
+                      {language === "ha" ? "Ana amsa..." : "Typing..."}
+                    </span>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* Input Area */}
+              <div style={styles.inputArea}>
+                <div style={styles.inputRow}>
+                  <input
+                    type="text"
+                    placeholder={
+                      language === "ha" 
+                        ? "Rubuta tambayar lafiya..." 
+                        : "Type health question..."
+                    }
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    style={styles.input}
+                  />
+                  <button 
+                    onClick={sendMessage} 
+                    disabled={!input.trim()}
+                    style={{
+                      ...styles.sendButton,
+                      opacity: !input.trim() ? 0.6 : 1,
+                      cursor: !input.trim() ? "not-allowed" : "pointer"
+                    }}
+                  >
+                    {language === "ha" ? "Aika" : "Send"}
+                  </button>
+                </div>
+                
+                {/* Disease Quick Buttons */}
+                <div style={styles.quickActions}>
+                  <button
+                    onClick={() => showDiseaseInfo("malaria")}
+                    style={{...styles.diseaseButton, backgroundColor: "#ef4444"}}
+                  >
+                    🦟 {DISEASE_INFO.malaria[language].name}
+                  </button>
+                  <button
+                    onClick={() => showDiseaseInfo("typhoid")}
+                    style={{...styles.diseaseButton, backgroundColor: "#f97316"}}
+                  >
+                    🤒 {DISEASE_INFO.typhoid[language].name}
+                  </button>
+                  <button
+                    onClick={() => showDiseaseInfo("diabetes")}
+                    style={{...styles.diseaseButton, backgroundColor: "#8b5cf6"}}
+                  >
+                    🍬 {DISEASE_INFO.diabetes[language].name}
+                  </button>
+                  <button
+                    onClick={() => showDiseaseInfo("cholera")}
+                    style={{...styles.diseaseButton, backgroundColor: "#06b6d4"}}
+                  >
+                    💧 {DISEASE_INFO.cholera[language].name}
+                  </button>
+                </div>
+              </div>
+              
+              {/* Footer */}
+              <div style={styles.footer}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                  <div style={{ width: "6px", height: "6px", backgroundColor: "#10b981", borderRadius: "50%" }}></div>
+                  <span>{language === "ha" ? "Aiki" : "Online"}</span>
+                </div>
+                <div style={{ fontSize: "10px", textAlign: "center" }}>
+                  {language === "ha" 
+                    ? "An haɓaka ta Hamisu Isyaku" 
+                    : "Developed by Hamisu Isyaku"}
+                </div>
+                <div style={{ fontSize: "10px", color: "#94a3b8" }}>
+                  v1.0
+                </div>
+              </div>
+            </div>
+
+            {/* PHC Locations Panel */}
+            <div 
+              style={{
+                ...styles.phcPanel,
+                display: activeTab === "phc" ? "flex" : "none"
+              }}
+            >
+              <div style={styles.phcHeader}>
+                <h2 style={styles.phcTitle}>
+                  📍 {language === "ha" ? "Cibiyoyin Kiwon Lafiya" : "PHC Locations"}
+                </h2>
+                <p style={styles.phcSubtitle}>
+                  {language === "ha" 
+                    ? "Cibiyoyi a Auyo LGA" 
+                    : "Centers in Auyo LGA"}
+                </p>
+              </div>
+              
+              <div style={styles.phcListContainer}>
+                {PHC_LIST.map((phc, index) => {
+                  const [ward, name] = phc.split(" – ");
+                  return (
+                    <div key={index} style={styles.phcItem}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+                        <div style={{
+                          width: "20px",
+                          height: "20px",
+                          backgroundColor: "#2563eb",
+                          borderRadius: "4px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "10px",
+                          fontWeight: "600",
+                          flexShrink: 0
+                        }}>
+                          {index + 1}
+                        </div>
+                        <h4 style={styles.phcName}>{name}</h4>
+                      </div>
+                      <p style={styles.phcWard}>
+                        <span style={{ fontWeight: "500" }}>
+                          {language === "ha" ? "Unguwa" : "Ward"}:
+                        </span> {ward}
+                      </p>
+                    </div>
+                  );
+                })}
+                
+                {/* Emergency Info */}
+                <div style={styles.emergencyBox}>
+                  <div style={styles.emergencyTitle}>
+                    🚨 {language === "ha" ? "Gaggawa" : "Emergency"}
+                  </div>
+                  <div style={styles.emergencyText}>
+                    {language === "ha" 
+                      ? "Lambar Gaggawa: 112"
+                      : "Emergency Number: 112"}
+                  </div>
+                  <button 
+                    onClick={handleEmergencyCall}
+                    style={styles.emergencyButton}
+                  >
+                    📞 {language === "ha" ? "Kira Gaggawa" : "Call Emergency"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop View (hidden on mobile) */}
+        <div style={styles.desktopMainContent}>
           {/* Left Panel - Chat */}
-          <div style={styles.leftPanel}>
+          <div style={styles.desktopLeftPanel}>
             {/* Messages */}
-            <div style={styles.messagesArea}>
+            <div style={styles.desktopMessagesArea}>
               {messages.map((msg, index) => (
                 <div
                   key={index}
                   style={{
-                    ...styles.messageBubble,
-                    ...(msg.role === "user" ? styles.userMessage : styles.assistantMessage)
+                    marginBottom: "12px",
+                    padding: "12px 16px",
+                    borderRadius: "16px",
+                    maxWidth: "85%",
+                    wordWrap: "break-word",
+                    ...(msg.role === "user" ? {
+                      backgroundColor: "#3b82f6",
+                      color: "white",
+                      marginLeft: "auto",
+                      borderBottomRightRadius: "4px"
+                    } : {
+                      backgroundColor: "white",
+                      color: "#1e293b",
+                      marginRight: "auto",
+                      border: "1px solid #e2e8f0",
+                      borderBottomLeftRadius: "4px",
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
+                    })
                   }}
                 >
                   <div style={{
                     fontSize: "11px",
                     fontWeight: "600",
                     marginBottom: "4px",
-                    opacity: 0.8
+                    opacity: 0.8,
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
                   }}>
-                    {msg.role === "user" 
-                      ? (language === "ha" ? "Kai" : "You") 
-                      : (language === "ha" ? "Mataimakin" : "Assistant")}
-                    <span style={{ marginLeft: "8px", fontSize: "10px" }}>
+                    <span>
+                      {msg.role === "user" 
+                        ? (language === "ha" ? "Kai" : "You") 
+                        : (language === "ha" ? "Mataimakin" : "Assistant")}
+                    </span>
+                    <span style={{ fontSize: "10px", opacity: 0.7 }}>
                       {msg.timestamp}
                     </span>
                   </div>
-                  <div style={styles.messageText}>{msg.text}</div>
+                  <div style={{ fontSize: "14px", lineHeight: "1.5", whiteSpace: "pre-line", margin: 0 }}>
+                    {msg.text}
+                  </div>
                 </div>
               ))}
               
@@ -647,35 +1058,36 @@ export default function AuyoPHCConnectDemo() {
             
             {/* Footer */}
             <div style={styles.footer}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div style={{ width: "8px", height: "8px", backgroundColor: "#10b981", borderRadius: "50%" }}></div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <div style={{ width: "6px", height: "6px", backgroundColor: "#10b981", borderRadius: "50%" }}></div>
                 <span>{language === "ha" ? "Aiki" : "Online"}</span>
-                <span style={{ margin: "0 8px" }}>•</span>
-                <span>{language === "ha" ? "Demo v1.0" : "Demo v1.0"}</span>
               </div>
-              <div>
+              <div style={{ fontSize: "10px", textAlign: "center" }}>
                 {language === "ha" 
                   ? "An haɓaka ta Hamisu Isyaku" 
                   : "Developed by Hamisu Isyaku"}
+              </div>
+              <div style={{ fontSize: "10px", color: "#94a3b8" }}>
+                v1.0
               </div>
             </div>
           </div>
 
           {/* Right Panel - PHC Locations */}
-          <div style={styles.rightPanel}>
-            <div style={styles.sideHeader}>
-              <h2 style={styles.sideTitle}>
+          <div style={styles.desktopRightPanel}>
+            <div style={styles.phcHeader}>
+              <h2 style={styles.phcTitle}>
                 📍 {language === "ha" ? "Cibiyoyin Kiwon Lafiya" : "PHC Locations"}
               </h2>
-              <p style={styles.sideSubtitle}>
+              <p style={styles.phcSubtitle}>
                 {language === "ha" 
                   ? "Cibiyoyi a Auyo LGA" 
                   : "Centers in Auyo LGA"}
               </p>
             </div>
             
-            <div style={styles.phcListContainer}>
-              {PHC_LIST.slice(0, 6).map((phc, index) => {
+            <div style={styles.desktopPhcListContainer}>
+              {PHC_LIST.map((phc, index) => {
                 const [ward, name] = phc.split(" – ");
                 return (
                   <div key={index} style={styles.phcItem}>
@@ -690,7 +1102,8 @@ export default function AuyoPHCConnectDemo() {
                         justifyContent: "center",
                         color: "white",
                         fontSize: "10px",
-                        fontWeight: "600"
+                        fontWeight: "600",
+                        flexShrink: 0
                       }}>
                         {index + 1}
                       </div>
@@ -707,10 +1120,10 @@ export default function AuyoPHCConnectDemo() {
               
               {/* Emergency Info */}
               <div style={styles.emergencyBox}>
-                <div style={{ fontSize: "14px", fontWeight: "600", color: "#dc2626", marginBottom: "8px" }}>
+                <div style={styles.emergencyTitle}>
                   🚨 {language === "ha" ? "Gaggawa" : "Emergency"}
                 </div>
-                <div style={{ fontSize: "12px", color: "#991b1b", marginBottom: "8px" }}>
+                <div style={styles.emergencyText}>
                   {language === "ha" 
                     ? "Lambar Gaggawa: 112"
                     : "Emergency Number: 112"}
