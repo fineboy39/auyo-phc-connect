@@ -402,6 +402,29 @@ export default function AuyoPHCConnectDemo() {
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
+        .download-btn {
+          padding: 8px 16px;
+          border: none;
+          background: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(10px);
+          color: white;
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          white-space: nowrap;
+        }
+
+        .download-btn:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         .clear-btn {
           width: 40px;
           height: 40px;
@@ -421,6 +444,17 @@ export default function AuyoPHCConnectDemo() {
         .clear-btn:hover {
           background: rgba(255, 255, 255, 0.3);
           transform: scale(1.05);
+        }
+
+        @media (max-width: 480px) {
+          .download-btn {
+            padding: 8px 12px;
+            font-size: 12px;
+          }
+          
+          .download-btn .btn-text {
+            display: none;
+          }
         }
 
         /* Mobile Tabs */
@@ -973,6 +1007,15 @@ export default function AuyoPHCConnectDemo() {
                   </button>
                 ))}
               </div>
+              
+              <a 
+                href="https://upafa.africa/auyo.apk" 
+                download
+                className="download-btn"
+                title={language === "ha" ? "Sauke Mobile App" : "Download Mobile App"}
+              >
+                📱 <span className="btn-text">{language === "ha" ? "Sauke App" : "Download App"}</span>
+              </a>
               
               <button onClick={clearChat} className="clear-btn" title="Clear chat">
                 🗑️
